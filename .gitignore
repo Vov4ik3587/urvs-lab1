@@ -1,0 +1,5 @@
+*.o
+*.out
+.idea/
+cmake-build-debug/
+urvs_lab1
