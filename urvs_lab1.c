@@ -9,14 +9,11 @@ void checkDir(char *argv);
 
 int main(int argc, char *argv[])
 {
-    for (int count = 0; count < argc; count++)
-    {
-        printf("argv[%d] = %sn", count, argv[count]);
-    }
     if (argc != 2)
         printf("Invalid input data: enter the name of only one file");
     else
         checkDir(argv[1]);
+    
     return 0;
 }
 
@@ -29,7 +26,6 @@ void checkDir(char *argv)
     struct dirent *ent;
     if ((dir = opendir(argv)))
     {
-        printf("2");
         while ((ent = readdir(dir)))
         {
             struct stat st1;
@@ -37,13 +33,11 @@ void checkDir(char *argv)
             strcpy(pwd[1], ent->d_name);
             if (S_ISDIR(st1.st_mode) && (ent->d_name)[0] != '.')
             {
-                printf("3");
                 DIR *dir1;
                 struct dirent *ent1;
                 if ((dir1 = opendir(makePwd(str, pwd, 2))))
                 {
                     struct stat st2;
-                    printf("4");
                     while ((ent1 = readdir(dir1)) != NULL)
                     {
                         strcpy(pwd[2], ent1->d_name);
@@ -53,16 +47,16 @@ void checkDir(char *argv)
                             printf("%s\n", ent->d_name);
                             break;
                         }
-                        else
-                        {
-                            printf("%s - no such directory or not enough rights\n", ent->d_name);
-                        }
-                        closedir(dir1);
                     }
+                    closedir(dir1);
+                }
+                else
+                {
+                    printf("%s - no such directory or not enough rights\n", ent->d_name);
                 }
             }
-            closedir(dir);
         }
+        closedir(dir);
     }
     else
     {
@@ -78,5 +72,6 @@ char *makePwd(char *str, char (*pwd)[100], int col)
         strcat(str, "/");
         strcat(str, pwd[i]);
     }
+    
     return str;
 }
