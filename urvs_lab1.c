@@ -17,11 +17,11 @@ int main(int argc, char *argv[])
     return 0;
 }
 //----------------------------------------------------------------------
-/** 
+/**
  * Функция, которая определяет имена тех каталогов в каталоге,
  * в которых есть каталоги
- * @param argv имя целевого каталога, в котором будет происходить поиск 
-**/
+ * @param argv имя целевого каталога, в котором будет происходить поиск
+ **/
 void checkDir(char *argv)
 {
     char pwd[3][100];
@@ -31,24 +31,24 @@ void checkDir(char *argv)
     struct dirent *entry; //структура записей, содержащих информацию о каталоге
 
     // открываем поток целевого каталога
-    if (dir = opendir(argv)) 
+    if ((dir = opendir(argv)))
     {
         // считываем файлы в каталоге по очереди
-        while (entry = readdir(dir)) 
-        { 
+        while ((entry = readdir(dir))) 
+        {
             struct stat st1; // структура для сохранения информации
             stat(entry->d_name, &st1);
             strcpy(pwd[1], entry->d_name); // Копируем имя каталога в массив pwd
 
             // Проверяем, является ли файл каталогом и не каталогом "."
             if (S_ISDIR(st1.st_mode) && (entry->d_name)[0] != '.')
-            { 
+            {
                 // Если файл является каталогом, открываем для него поток
                 // и начинаем считывать файлы в нем
                 DIR *dir1;
                 struct dirent *ent1;
 
-                if (dir1 = opendir(makePwd(str, pwd, 2)))
+                if ((dir1 = opendir(makePwd(str, pwd, 2))))
                 {
                     struct stat st2;
 
@@ -64,31 +64,30 @@ void checkDir(char *argv)
                             printf("There are other directories in the directory %s\n", entry->d_name);
                             break;
                         }
-                        else
-                            printf("%s - no such directory or not enough rights\n", entry->d_name);
+                        
                     }
 
                     closedir(dir1);
                 }
                 else
-                    printf("%s - no such directory or not enough rights\n", entry->d_name);
+                    printf("%s - no such directory or not enough rights2\n", entry->d_name);
             }
         }
 
         closedir(dir);
     }
     else
-        printf("%s - no such directory or not enough rights\n", argv);
+        printf("%s - no such directory or not enough rights3\n", argv);
 }
 //------------------------------------------------------------------------------------------
 /**
  * Составляет относительный путь дочерних каталогов по отношению к целевому
- * 
+ *
  * @param str строка, в которой будет собираться путь
  * @param pwd составная часть итогового пути
  * @param amt количество частей
  * @return Строка, содержащая путь
-**/
+ **/
 char *makePwd(char *str, char (*pwd)[100], int amt)
 {
     strcpy(str, ".");
