@@ -61,9 +61,11 @@ void checkDir(char *argv)
                         {
                             // Если файл является каталогом, то
                             // выводим его имя в консоль
-                            printf("%s\n", entry->d_name);
+                            printf("There are other directories in the directory %s\n", entry->d_name);
                             break;
                         }
+                        else
+                            printf("%s - no such directory or not enough rights\n", entry->d_name);
                     }
 
                     closedir(dir1);
